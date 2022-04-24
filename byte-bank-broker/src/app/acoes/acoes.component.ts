@@ -1,5 +1,6 @@
+import { Subscription } from 'rxjs';
 import { AcoesService } from './acoes.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Acoes } from "./modelo/acoes"
 
@@ -8,15 +9,9 @@ import { Acoes } from "./modelo/acoes"
   templateUrl: './acoes.component.html',
   styleUrls: ['./acoes.component.css'],
 })
-export class AcoesComponent implements OnInit {
+export class AcoesComponent {
   acoesInput = new FormControl();
-  acoes:Acoes;
+  acoes$ = this.acoesService.getAcoes();
 
-  constructor(private acoesService:AcoesService) {}
-
-  ngOnInit(): void {
-    this.acoesService.getAcoes().subscribe((retornoApi)=>{
-      this.acoes = retornoApi.payload;
-    })
+  constructor(private acoesService: AcoesService) {}
   }
-}
