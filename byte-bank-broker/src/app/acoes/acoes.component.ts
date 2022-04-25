@@ -1,4 +1,4 @@
-import { Subscription } from 'rxjs';
+import { switchMap, tap } from 'rxjs/operators';
 import { AcoesService } from './acoes.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
@@ -11,7 +11,9 @@ import { Acoes } from "./modelo/acoes"
 })
 export class AcoesComponent {
   acoesInput = new FormControl();
-  acoes$ = this.acoesService.getAcoes();
+  acoes$ = this.acoesInput.valueChanges.pipe(tap(console.log),
+  switchMap((valorDigitado) => this.acoesService.getAcoes(valorDigitado)),
+  tap(console.log));
 
   constructor(private acoesService: AcoesService) {}
   }
